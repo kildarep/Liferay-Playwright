@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comparação de Screenshots</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Comparação de Screenshots</h1>
+    
+    <h2>Screenshot Pré-Deploy</h2>
+    <img id="preDeploy" src="" alt="Pré-Deploy">
+    
+    <h2>Screenshot Pós-Deploy</h2>
+    <img id="postDeploy" src="" alt="Pós-Deploy">
+    
+    <h2>Diferença</h2>
+    <img id="diff" src="" alt="Diferença">
+
+    <script>
+        // parâmetros da URL
+        const params = new URLSearchParams(window.location.search);
+        const preDeploy = params.get('preDeploy');
+        const postDeploy = params.get('postDeploy');
+        const diff = params.get('diff');
+
+        //verifica valores recebidos
+        console.log('Pre-Deploy:', preDeploy);
+        console.log('Post-Deploy:', postDeploy);
+        console.log('Diff:', diff);
+
+        //src das imagens
+        document.getElementById('preDeploy').src = preDeploy;
+        document.getElementById('postDeploy').src = postDeploy;
+        document.getElementById('diff').src = diff;
+    </script>
+</body>
+</html>

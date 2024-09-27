@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comparador</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            text-align: center;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        input[type="url"] {
+            width: 300px;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <h1>Comparador de Screenshots</h1>
+    <form id="screenshot-form">
+        <label for="url">Insira a URL do site:</label>
+        <input type="url" id="url" placeholder="https://exemplo.com" required>
+        <button type="submit">Capturar Screenshots</button>
+    </form>
+    <div id="result"></div>
+
+    <script>
+        document.getElementById('screenshot-form').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const url = document.getElementById('url').value;
+            document.getElementById('result').innerHTML = 'Capturando screenshots, aguarde...';
+
+            // Envia a URL para o servidor (ou chama o script Playwright)
+            const response = await fetch('/screenshot', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ url }),
+            });
+
+            const data = await response.json();
+            if (response.ok) {
+                window.location.href = `/comparison?preDeploy=${encodeURIComponent(data.preDeploy)}&postDeploy=${encodeURIComponent(data.postDeploy)}&diff=${encodeURIComponent(data.diff)}`;
+            } else {
+                document.getElementById('result').innerHTML = 'Erro ao capturar screenshots: ' + data.error;
+            }
+        });
+    </script>
+</body>
+</html>
