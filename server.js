@@ -12,7 +12,7 @@ app.use(express.static('public'));
 app.post('/screenshot', (req, res) => {
     const { url } = req.body;
 
-    //Playwright
+    // Playwright
     exec(`URL=${url} npx playwright test tests/screenshot-comparison.spec.js`, (error, stdout, stderr) => {
         if (error) {
             console.error(`Erro: ${stderr}`);
@@ -20,19 +20,21 @@ app.post('/screenshot', (req, res) => {
         }
         console.log(stdout);
         
-        const preDeployPath = 'screenshots/pre-deploy.png';
-        const postDeployPath = 'screenshots/post-deploy.png';
-        const diffPath = 'screenshots/diff.png';
+        const preDeployPath = '/screenshots/pre-deploy.png';
+        const postDeployPath = '/screenshots/post-deploy.png';
+        const diffPath = '/screenshots/diff.png';
+        const diffHtmlPath = '/html/diff-report.html';
 
         res.json({ 
             preDeploy: preDeployPath,
             postDeploy: postDeployPath,
-            diff: diffPath
+            diff: diffPath,
+            diffHtml: diffHtmlPath
         });
     });
 });
 
-// Rota
+// Rota para acessar a página de comparação
 app.get('/comparison', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'comparison.html'));
 });
@@ -40,4 +42,3 @@ app.get('/comparison', (req, res) => {
 app.listen(PORT, () => {
     console.log(`Servidor rodando em http://localhost:${PORT}`);
 });
-
